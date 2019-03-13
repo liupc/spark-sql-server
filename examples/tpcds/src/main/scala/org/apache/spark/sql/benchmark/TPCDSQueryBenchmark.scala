@@ -339,7 +339,7 @@ object TPCDSQueryBenchmark extends Logging {
     props.put("user", System.getProperty("user.name"))
     props.put("password", "")
     val conn = DriverManager.getConnection(
-      s"jdbc:postgresql://${benchmarkArgs.host}/default", props)
+      s"jdbc:hive2://${benchmarkArgs.host}/default", props)
     conn.setAutoCommit(false)
     val stmt = conn.createStatement()
     stmt.setFetchSize(100000)
