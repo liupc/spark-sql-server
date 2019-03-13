@@ -39,12 +39,30 @@ function find_resource {
 }
 
 # Install the proper version of Scala for lanching benchmarks
-. ${_DIR}/../thirdparty/install.sh
-install_scala
+#. ${_DIR}/../thirdparty/install.sh
+#install_scala
+
+# Assume we must provide the java by ourself to save downloading time
+JAVA_HOME=""
+if [ -z "$JAVA_HOME" ];then
+  echo "\$JAVA_HOME is not set!!!" && exit 2
+fi
 
 # Do preparations before rinning TPCDS quries
 find_resource
 
+# Extra jvm opts
+EXTRA_JVM_ARGS=""
+USER_ARGS=""
+while [ $# -gt 0 ];do
+  if grep "\-D" $1;then
+    EXTRA_JVM_ARGS="$EXTRA_JVM_ARGS $1"
+  else
+    USER_ARGS="$USER_ARGS $1"
+  fi
+  shift
+done
+
 # Run TPCDS queries
-exec "${SCALA_BIN}" -cp ${RESOURCES} org.apache.spark.sql.benchmark.TPCDSQueryBenchmark "$@"
+exec "${JAVA_HOME}/bin/java" $EXTRA_JVM_ARGS -cp ${RESOURCES} org.apache.spark.sql.benchmark.TPCDSQueryBenchmark "$USER_ARGS"
 

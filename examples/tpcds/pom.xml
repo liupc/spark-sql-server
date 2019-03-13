@@ -67,6 +67,10 @@
       <artifactId>postgresql</artifactId>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

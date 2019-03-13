@@ -25,6 +25,8 @@ import java.util.Properties
 import scala.collection.mutable
 import scala.util.control.NonFatal
 
+import org.apache.hadoop.security.UserGroupInformation
+
 import org.apache.spark.sql.benchmark.Utils._
 
 
@@ -336,10 +338,11 @@ object TPCDSQueryBenchmark extends Logging {
     }
 
     val props = new Properties()
-    props.put("user", System.getProperty("user.name"))
+    // For kerberos auth
+    props.put("user", UserGroupInformation.getCurrentUser().getShortUserName())
     props.put("password", "")
     val conn = DriverManager.getConnection(
-      s"jdbc:hive2://${benchmarkArgs.host}/default", props)
+      s"${benchmarkArgs.uri}", props)
     conn.setAutoCommit(false)
     val stmt = conn.createStatement()
     stmt.setFetchSize(100000)

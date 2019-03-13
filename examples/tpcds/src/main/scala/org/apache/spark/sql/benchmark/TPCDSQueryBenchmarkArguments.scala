@@ -22,6 +22,7 @@ import java.util.Locale
 class TPCDSQueryBenchmarkArguments(val args: Array[String]) {
   var dataLocation: String = null
   var host: String = "localhost:5432"
+  var uri: String = s"jdbc:hive2://$host/default"
   var queryFilter: Set[String] = Set.empty
 
   parseArgs(args.toList)
@@ -38,6 +39,10 @@ class TPCDSQueryBenchmarkArguments(val args: Array[String]) {
 
         case ("--host") :: value :: tail =>
           host = value
+          args = tail
+
+        case ("--uri") :: value :: tail =>
+          uri = value
           args = tail
 
         case ("--query-filter") :: value :: tail =>
