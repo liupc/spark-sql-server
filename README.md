@@ -306,7 +306,8 @@ Finally, runs TPC-DS queries against the SQL server:
     $ ./bin/run-tpcds-benchmark --data-location /tmp/spark-tpcds-data --uri {jdbc uri}
     
 >NOTE: if enabled kerberos auth, we should also specify following auth properties and kinit before start.
->e.g  $ ./bin/run-tpcds-benchmark --data-location /tmp/spark-tpcds-data --uri {jdbc uri} -Dhadoop.property.hadoop.security.authentication=kerberos -Djava.security.krb5.conf=/etc/krb5.conf"
+
+    $ ./bin/run-tpcds-benchmark --data-location /tmp/spark-tpcds-data --uri {jdbc uri} -Dhadoop.property.hadoop.security.authentication=kerberos -Djava.security.krb5.conf=/etc/krb5.conf
 
 [This benchmark code](./sql/tpcds/src/main/scala/org/apache/spark/sql/benchmark/TPCDSQueryBenchmark.scala)
 is a good example about how to connect the SQL server with Postgre JDBC drivers.
