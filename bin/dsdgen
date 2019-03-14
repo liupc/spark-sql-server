@@ -20,8 +20,10 @@
 #
 # Shell script for generating TPCDS data
 
-if [ -z "${SPARK_HOME}" ]; then
-  echo "env SPARK_HOME not defined" 1>&2
+# Prefer spark-submit under env PATH than env SPARK_HOME
+spark_submit=`which spark-submit`
+if [ $? -ne 0 ] && [ -z "${SPARK_HOME}" ]; then
+  echo "spark-submit not found or env SPARK_HOME not defined" 1>&2
   exit 1
 fi
 
@@ -52,8 +54,10 @@ check_spark_compiled
 parse_args_for_spark_submit "$@"
 find_resource
 
-echo "Using \`spark-submit\` from path: $SPARK_HOME" 1>&2
-exec "${SPARK_HOME}"/bin/spark-submit                           \
+spark_submit=${a:-${SPARK_HOME}/bin/spark-submit}
+
+echo "Using \`spark-submit\` from path: $spark_submit" 1>&2
+exec $spark_submit \
   --class org.apache.spark.sql.benchmark.TPCDSDatagen \
   $(join_by " " ${SPARK_CONF[@]})                               \
   ${RESOURCE}                                                   \
