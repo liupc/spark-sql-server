@@ -64,6 +64,12 @@ parse_args_for_spark_submit() {
   while [ ! -z "$1" ]; do
     if [[ "$1" =~ ^--master= ]]; then
       SPARK_CONF+=($1)
+    elif [[ "$1" =~ ^--cluster= ]];then
+      SPARK_CONF+=($1)
+    elif [[ "$1" =~ ^--java ]];then
+      SPARK_CONF+=($1)
+      shift
+      SPARK_CONF+=($1)
     elif [ "$1" == "--conf" ]; then
       shift
       SPARK_CONF+=("--conf $1")
