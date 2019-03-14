@@ -54,7 +54,7 @@ check_spark_compiled
 parse_args_for_spark_submit "$@"
 find_resource
 
-spark_submit=${a:-${SPARK_HOME}/bin/spark-submit}
+spark_submit=${spark_submit:-${SPARK_HOME}/bin/spark-submit}
 
 echo "Using \`spark-submit\` from path: $spark_submit" 1>&2
 exec $spark_submit \
