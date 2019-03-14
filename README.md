@@ -291,10 +291,9 @@ See [Connection Fail-over](https://jdbc.postgresql.org/documentation/head/connec
 
 You first need to generate test data for TPC-DS queries:
 
-    $ git clone https://github.com/maropu/spark-tpcds-datagen.git
     $ ./bin/dsdgen --output-location /tmp/spark-tpcds-data
 
-Then, launches the SQL server with a Spark standalone mode:
+Then, launches the SQL server with a Spark standalone mode(skip this step if already provided):
 
     $ ./sbin/start-sql-server.sh \
         --conf spark.master=local[*] \
@@ -309,8 +308,7 @@ Finally, runs TPC-DS queries against the SQL server:
 
     $ ./bin/run-tpcds-benchmark --data-location /tmp/spark-tpcds-data --uri {jdbc uri} -Dhadoop.property.hadoop.security.authentication=kerberos -Djava.security.krb5.conf=/etc/krb5.conf
 
-[This benchmark code](./sql/tpcds/src/main/scala/org/apache/spark/sql/benchmark/TPCDSQueryBenchmark.scala)
-is a good example about how to connect the SQL server with Postgre JDBC drivers.
+Details refer to [This benchmark code](./sql/tpcds/src/main/scala/org/apache/spark/sql/benchmark/TPCDSQueryBenchmark.scala)
 
 ## Bug reports
 
