@@ -58,9 +58,14 @@ find_resource
 spark_submit=${spark_submit:-${SPARK_HOME}/bin/spark-submit}
 
 echo "Using \`spark-submit\` from path: $spark_submit" 1>&2
-exec $spark_submit \
-  --class org.apache.spark.sql.benchmark.TPCDSDatagen \
+echo exec $spark_submit \
   $(join_by " " ${SPARK_CONF[@]})                               \
+  --class org.apache.spark.sql.benchmark.TPCDSDatagen \
+  ${RESOURCE}                                                   \
+  $(join_by " " ${ARGS[@]})
+exec $spark_submit \
+  $(join_by " " ${SPARK_CONF[@]})                               \
+  --class org.apache.spark.sql.benchmark.TPCDSDatagen \
   ${RESOURCE}                                                   \
   $(join_by " " ${ARGS[@]})
 
