@@ -341,6 +341,9 @@ object TPCDSQueryBenchmark extends Logging {
     // For kerberos auth
     props.put("user", UserGroupInformation.getCurrentUser().getShortUserName())
     props.put("password", "")
+    // scalastyle:off
+    Class.forName("org.apache.hive.jdbc.HiveDriver")
+    // scalastyle:on
     val conn = DriverManager.getConnection(
       s"${benchmarkArgs.uri}", props)
     conn.setAutoCommit(false)

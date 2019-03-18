@@ -43,7 +43,6 @@ function find_resource {
 #install_scala
 
 # Assume we must provide the java by ourself to save downloading time
-JAVA_HOME=""
 if [ -z "$JAVA_HOME" ];then
   echo "\$JAVA_HOME is not set!!!" && exit 2
 fi
@@ -52,17 +51,20 @@ fi
 find_resource
 
 # Extra jvm opts
-EXTRA_JVM_ARGS=""
-USER_ARGS=""
+EXTRA_JVM_ARGS=()
+USER_ARGS=()
 while [ $# -gt 0 ];do
-  if grep "\-D" $1;then
-    EXTRA_JVM_ARGS="$EXTRA_JVM_ARGS $1"
+  if [[ "$1" =~ -D[^[:space:]]+ ]];then
+    EXTRA_JVM_ARGS+=("$1")
+    echo ${EXTRA_JVM_ARGS[@]}
   else
-    USER_ARGS="$USER_ARGS $1"
+    USER_ARGS+=("$1")
   fi
   shift
 done
 
 # Run TPCDS queries
+set -x
 exec "${JAVA_HOME}/bin/java" $EXTRA_JVM_ARGS -cp ${RESOURCES} org.apache.spark.sql.benchmark.TPCDSQueryBenchmark "$USER_ARGS"
+set +x
 
